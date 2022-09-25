@@ -75,7 +75,7 @@ function DialogKey:OnInitialize()				-- Runs on addon initialization
 	self:RegisterChatCommand("dkey", "ChatCommand")
 	self:RegisterChatCommand("dialogkey", "ChatCommand")
 	
-	self:RegisterEvent("GOSSIP_SHOW",		  function() self:ScheduleTimer(self.EnumerateGossips_Gossip, 0.01) end)
+	--self:RegisterEvent("GOSSIP_SHOW",		  function() self:ScheduleTimer(self.EnumerateGossips_Gossip, 0.01) end)
 	self:RegisterEvent("QUEST_GREETING",	  function() self:ScheduleTimer(self.EnumerateGossips_Quest, 0.01) end)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED",function() self:ScheduleTimer(self.DisableQuestScrolling, 0.1) end) -- Since scrolling can't be disabled on closing a scrollframe in combat, wait til the end of combat to try disabling
 	
@@ -107,6 +107,44 @@ function DialogKey:OnInitialize()				-- Runs on addon initialization
 	
 	self:ShowOldKeybindWarning()
 	self:CreateOptionsFrame()
+
+	self.gossipChoices = {}
+	self.oldSetDataProvider = GossipFrame.GreetingPanel.ScrollBox.SetDataProvider
+	GossipFrame.GreetingPanel.ScrollBox.SetDataProvider = function(frame, dataProvider)
+		DialogKey:DataProviderInterceptor(frame, dataProvider)
+	end
+end
+
+function DialogKey:DataProviderInterceptor(frame, dataProvider)
+	newDataProvider = CreateDataProvider()
+	num = 1
+	self.gossipChoices = {}
+	for index, elementData in dataProvider:Enumerate() do
+		if not elementData.info or num > 9 then
+			newElementData = elementData
+		else
+			newElementData = {}
+			for k,v in pairs(elementData) do
+				if k ~= "info" then
+					newElementData[k] = v
+				else
+					newInfo = {}
+					for l,w in pairs(elementData.info) do
+						if l == "name" or l == "title" then
+							newInfo[l] = num .. ". " .. w
+							self.gossipChoices[num] = elementData.info
+							num = num + 1
+						else
+							newInfo[l] = w
+						end
+					end
+					newElementData[k] = newInfo
+				end
+			end
+		end
+		newDataProvider:Insert(newElementData)
+	end
+	self.oldSetDataProvider(frame, newDataProvider)
 end
 
 function DialogKey:ChatCommand(input)			-- Chat command handler

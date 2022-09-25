@@ -139,9 +139,21 @@ function DialogKey:HandleKey(key)				-- Run for every key hit ever; runs ClickBu
 	
 	if GetCurrentKeyBoardFocus() then return end -- Don't handle key if we're typing into something
 	
-	if key:find("^%d$") and GossipFrameGreetingPanel:IsVisible() and DialogKey.db.global.numKeysForGossip then
-		local num = 1
+	if key:find("^%d$") and GossipFrame:IsShown() and DialogKey.db.global.numKeysForGossip then
 		local keynum = tonumber(key)
+		choice = DialogKey.gossipChoices[keynum]
+		if choice and (choice.gossipOptionID or choice.questID) then
+			if choice.gossipOptionID then
+				C_GossipInfo.SelectOption(choice.gossipOptionID)
+			elseif choice.isComplete then
+				C_GossipInfo.SelectActiveQuest(choice.questID)
+			else
+				C_GossipInfo.SelectAvailableQuest(choice.questID)
+			end
+			self:SetPropagateKeyboardInput(false)
+			return
+		end
+		--[[
 		for i=1,9 do
 			local frame = GossipFrame.buttons[i]
 			
@@ -156,6 +168,7 @@ function DialogKey:HandleKey(key)				-- Run for every key hit ever; runs ClickBu
 				num = num+1
 			end
 		end
+		]]--
 	elseif key:find("^%d$") and QuestFrameGreetingPanel:IsVisible() and DialogKey.db.global.numKeysForGossip then
 		local frames = DialogKey:GetQuestButtons()
 
@@ -242,6 +255,17 @@ function DialogKey:ClickButtons()				-- Main function to click on dialog buttons
 		elseif framename == "GossipTitleButton1" and GossipFrame:IsVisible() then
 			-- Try clicking the first gossip option with a completed quest icon -- also check if it's visible, since frames are reused and it might get stuck trying to click a leftover, invisible active quest button
 			for i=1,9 do
+				choice = DialogKey.gossipChoices[i]
+				if choice and choice.questID then
+					if choice.isComplete then
+						C_GossipInfo.SelectActiveQuest(choice.questID)
+					else
+						C_GossipInfo.SelectAvailableQuest(choice.questID)
+					end
+					return true
+				end
+				--[[
+
 				if GossipFrame_GetTitleButton(i) then
 					if GossipFrame_GetTitleButton(i).Icon:IsVisible() and (
 						GossipFrame_GetTitleButton(i).Icon:GetTexture() == "Interface\\GossipFrame\\ActiveQuestIcon" or
@@ -250,6 +274,7 @@ function DialogKey:ClickButtons()				-- Main function to click on dialog buttons
 						return DialogKey:ClickFrame(GossipFrame_GetTitleButton(i))
 					end
 				end
+				]]--
 			end
 			
 			-- If none were found, just click the first one
@@ -344,22 +369,14 @@ function DialogKey:GetQuestButtons()			-- Return sorted list of quest button fra
 		})
 	end
 	
-	table.sort(frames,function(a,b)
-		if a.top > b.top then
-			return 1
-		elseif a.top < b.top then
-			return -1
-		end
-		
-		return 0
-	end)
-	
+	table.sort(frames, function(a,b) return a.top > b.top end)
 	return frames
 end
 
+--[[
 function DialogKey:EnumerateGossips_Gossip()	-- Prefixes 1., 2., etc. to NPC options
 	if not DialogKey.db.global.numKeysForGossip then return end
-	if not GossipFrameGreetingPanel:IsVisible() and not QuestFrameGreetingPanel:IsVisible() then return end
+	if not GossipFrame:IsShown() and not QuestFrameGreetingPanel:IsVisible() then return end
 	
 	local num = 1
 
@@ -374,10 +391,11 @@ function DialogKey:EnumerateGossips_Gossip()	-- Prefixes 1., 2., etc. to NPC opt
 		num = num+1
 	end
 end
+]]--
 
 function DialogKey:EnumerateGossips_Quest()		-- Prefixes 1., 2., etc. to NPC options
 	if not DialogKey.db.global.numKeysForGossip then return end
-	if not GossipFrameGreetingPanel:IsVisible() and not QuestFrameGreetingPanel:IsVisible() then return end
+	if not GossipFrame:IsShown() and not QuestFrameGreetingPanel:IsVisible() then return end
 	
 	local frames = DialogKey:GetQuestButtons()
 	local num = 1
@@ -449,7 +467,11 @@ end
 
 function DialogKey:GlowFrameUpdate(delta)		-- Fades out the glow frame
 	-- Use delta (time since last frame) so animation takes same amount of time regardless of framerate
-	self:SetAlpha(self:GetAlpha() - delta*3)
+	alpha = self:GetAlpha() - delta*3
+	if alpha < 0 then
+		alpha = 0
+	end
+	self:SetAlpha(alpha)
 	if self:GetAlpha() <= 0 then self:Hide() end
 end
 
@@ -505,7 +527,7 @@ end
 function DialogKey:debug_dialog(key)			-- Print debug info about currently active quest/gossip window
 	print("===== debugging =====")
 	key = tostring(key)
-	if key:find("^%d$") and (GossipFrameGreetingPanel:IsVisible() or QuestFrameGreetingPanel:IsVisible()) and DialogKey.db.global.numKeysForGossip then
+	if key:find("^%d$") and (GossipFrame:IsShown() or QuestFrameGreetingPanel:IsVisible()) and DialogKey.db.global.numKeysForGossip then
 		local num = 1
 		for i=1,9 do
 			print("i="..i..", num="..num)

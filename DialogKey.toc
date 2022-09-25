@@ -6,6 +6,7 @@
 ## SavedVariables: DialogKeyDB
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
+DialogKey.xml
 embeds.xml
 core.lua
 main.lua

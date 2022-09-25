@@ -43,12 +43,12 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	scrollFrame:SetScrollChild(optionsContent)
 	
 	local title = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
-	title:SetFont("Fonts\\FRIZQT__.TTF", 16)
+	title:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
 	title:SetText("DialogKey")
 	title:SetPoint("TOPLEFT", 16, -16)
 	
 	local subtitle = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-	subtitle:SetFont("Fonts\\FRIZQT__.TTF", 10)
+	subtitle:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
 	subtitle:SetText("Version " .. GetAddOnMetadata("DialogKey","Version"))
 	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 4, -8)
 	
@@ -91,14 +91,14 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	optionsContent.keybindButtons[2] = button2
 	
 	local keybindOr = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	keybindOr:SetFont("Fonts\\FRIZQT__.TTF", 12)
+	keybindOr:SetFont("Fonts\\FRIZQT__.TTF", 12, "")
 	keybindOr:SetTextColor(1,1,1,1)
 	keybindOr:SetText("or")
 	keybindOr:SetPoint("LEFT", button1, "RIGHT", 0, 2)
 	keybindOr:SetPoint("RIGHT", button2, "LEFT", 0, 2)
 	
 	local keybindTitle = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	keybindTitle:SetFont("Fonts\\FRIZQT__.TTF", 12)
+	keybindTitle:SetFont("Fonts\\FRIZQT__.TTF", 12, "")
 	keybindTitle:SetTextColor(1,1,1,1)
 	keybindTitle:SetJustifyH("LEFT")
 	keybindTitle:SetWidth(500)
@@ -107,7 +107,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	keybindTitle:SetPoint("BOTTOMLEFT", button1, "TOPLEFT", 0, 4)
 	
 	local keybindReminder = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	keybindReminder:SetFont("Fonts\\FRIZQT__.TTF", 10)
+	keybindReminder:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
 	keybindReminder:SetTextColor(1,1,1,1)
 	keybindReminder:SetText("Press any key...")
 	keybindReminder:SetPoint("LEFT", button2, "RIGHT", 4, 0)
@@ -198,7 +198,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	soulstoneRezCheckbox:SetChecked(DialogKey.db.global.soulstoneRez)
 	
 	-- Additional buttons to click
-	local additionalScroll = CreateFrame("ScrollFrame", "DialogKeyScrollFrame", optionsContent, "InputScrollFrameTemplate")
+	local additionalScroll = CreateFrame("ScrollFrame", "DialogKeyScrollFrame", optionsContent, "DialogKeyScrollFrameTemplate")
 	additionalScroll:SetSize(300,150)
 	additionalScroll:SetPoint("TOPLEFT", dontClickRevivesCheckbox, "BOTTOMLEFT", 9, -80)
 	additionalScroll.CharCount:Hide()
@@ -225,7 +225,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	additionalScroll.EditBox:SetMaxLetters(0)
 	additionalScroll.EditBox:SetWidth(additionalScroll:GetWidth())
 	additionalScroll.EditBox:Enable()
-	additionalScroll.EditBox:SetFont("Fonts\\ARIALN.TTF", 16)
+	additionalScroll.EditBox:SetFont("Fonts\\ARIALN.TTF", 16, "")
 	
 	additionalScroll.EditBox:SetScript("OnEnterPressed", nil)
 	
@@ -247,14 +247,14 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	optionsContent.additionalSave = additionalSave
 	
 	local additionalTitle = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	additionalTitle:SetFont("Fonts\\FRIZQT__.TTF", 12)
+	additionalTitle:SetFont("Fonts\\FRIZQT__.TTF", 12, "")
 	additionalTitle:SetTextColor(1,1,1,1)
 	additionalTitle:SetJustifyH("LEFT")
 	additionalTitle:SetText("Additional buttons to click")
 	additionalTitle:SetPoint("BOTTOMLEFT", optionsContent.additionalScroll, "TOPLEFT", -4, 6)
 	
 	local additionalExplanation = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-	additionalExplanation:SetFont("Fonts\\FRIZQT__.TTF", 10)
+	additionalExplanation:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
 	additionalExplanation:SetTextColor(1,1,1,1)
 	additionalExplanation:SetJustifyH("LEFT")
 	additionalExplanation:SetWordWrap(true)
@@ -264,7 +264,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	
 	
 	-- Dialog blacklist
-	local blacklistScroll = CreateFrame("ScrollFrame", "DialogKeyScrollFrame", optionsContent, "InputScrollFrameTemplate")
+	local blacklistScroll = CreateFrame("ScrollFrame", "DialogKeyScrollFrame", optionsContent, "DialogKeyScrollFrameTemplate")
 	blacklistScroll:SetSize(300,150)
 	blacklistScroll:SetPoint("TOPLEFT", additionalScroll, "BOTTOMLEFT", 0, -40)
 	blacklistScroll.CharCount:Hide()
@@ -291,7 +291,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	blacklistScroll.EditBox:SetMaxLetters(0)
 	blacklistScroll.EditBox:SetWidth(blacklistScroll:GetWidth())
 	blacklistScroll.EditBox:Enable()
-	blacklistScroll.EditBox:SetFont("Fonts\\ARIALN.TTF", 16)
+	blacklistScroll.EditBox:SetFont("Fonts\\ARIALN.TTF", 16, "")
 	
 	blacklistScroll.EditBox:SetScript("OnEnterPressed", nil)
 	
@@ -314,7 +314,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	
 	-- Blacklist title
 	local blacklistTitle = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	blacklistTitle:SetFont("Fonts\\FRIZQT__.TTF", 12)
+	blacklistTitle:SetFont("Fonts\\FRIZQT__.TTF", 12, "")
 	blacklistTitle:SetTextColor(1,1,1,1)
 	blacklistTitle:SetJustifyH("LEFT")
 	blacklistTitle:SetText("Confirmation dialog blacklist")
@@ -322,7 +322,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	
 	-- Blacklist description
 	local blacklistExplanation = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-	blacklistExplanation:SetFont("Fonts\\FRIZQT__.TTF", 10)
+	blacklistExplanation:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
 	blacklistExplanation:SetTextColor(1,1,1,1)
 	blacklistExplanation:SetJustifyH("LEFT")
 	blacklistExplanation:SetWordWrap(true)
@@ -332,7 +332,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	
 	-- Key cooldown title
 	local cooldownTitle = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	cooldownTitle:SetFont("Fonts\\FRIZQT__.TTF", 14)
+	cooldownTitle:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
 	cooldownTitle:SetTextColor(1,.75,0,1)
 	cooldownTitle:SetJustifyH("LEFT")
 	cooldownTitle:SetText("Keypress cooldown")
@@ -340,7 +340,7 @@ function DialogKey:CreateOptionsFrame()		-- Constructs the options frame
 	
 	-- Key cooldown description
 	local cooldownDesc = optionsContent:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	cooldownDesc:SetFont("Fonts\\FRIZQT__.TTF", 11)
+	cooldownDesc:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
 	cooldownDesc:SetTextColor(1,1,1,1)
 	cooldownDesc:SetJustifyH("LEFT")
 	cooldownDesc:SetText("How long to block normal input after a dialog button has been pressed by the bound key,\nto avoid jumping after spamming the dialog key (e.g. picking up quests).\nOnly suppresses game input (like jumping), not dialog key presses.")
