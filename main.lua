@@ -256,16 +256,21 @@ function DialogKey:ClickButtons()				-- Main function to click on dialog buttons
 			-- Try clicking the first gossip option with a completed quest icon -- also check if it's visible, since frames are reused and it might get stuck trying to click a leftover, invisible active quest button
 			for i=1,9 do
 				choice = DialogKey.gossipChoices[i]
-				if choice and choice.questID then
-					if choice.isComplete then
-						C_GossipInfo.SelectActiveQuest(choice.questID)
-					else
-						C_GossipInfo.SelectAvailableQuest(choice.questID)
+				if choice then
+					if choice.questID then
+						if choice.isComplete then
+							C_GossipInfo.SelectActiveQuest(choice.questID)
+						else
+							C_GossipInfo.SelectAvailableQuest(choice.questID)
+						end
+						return true
+					elseif
+						choice.gossipOptionID then
+							C_GossipInfo.SelectOption(choice.gossipOptionID)
+						end
 					end
-					return true
 				end
 				--[[
-
 				if GossipFrame_GetTitleButton(i) then
 					if GossipFrame_GetTitleButton(i).Icon:IsVisible() and (
 						GossipFrame_GetTitleButton(i).Icon:GetTexture() == "Interface\\GossipFrame\\ActiveQuestIcon" or
