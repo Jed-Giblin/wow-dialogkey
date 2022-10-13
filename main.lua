@@ -263,12 +263,10 @@ function DialogKey:ClickButtons()				-- Main function to click on dialog buttons
 						else
 							C_GossipInfo.SelectAvailableQuest(choice.questID)
 						end
-						return true
-					elseif
-						choice.gossipOptionID then
-							C_GossipInfo.SelectOption(choice.gossipOptionID)
-						end
+					elseif choice.gossipOptionID then
+						C_GossipInfo.SelectOption(choice.gossipOptionID)
 					end
+					return true
 				end
 				--[[
 				if GossipFrame_GetTitleButton(i) then
